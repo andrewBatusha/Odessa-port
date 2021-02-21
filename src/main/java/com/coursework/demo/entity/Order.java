@@ -9,6 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,16 +23,14 @@ import java.io.Serializable;
 public class Order implements Serializable {
 
     @Id
-    @GeneratedValue
-    private long id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String description;
 
     private String client;
 
     private int reward;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "crew_id")
     private Crew crew;
 
