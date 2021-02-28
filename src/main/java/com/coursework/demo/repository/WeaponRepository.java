@@ -9,11 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface WeaponRepository extends PagingAndSortingRepository<Weapon, Long> {
-    @Query("""
-            SELECT NEW com.coursework.demo.dto.WeaponsTypeDTO(w.weaponsType, SUM(w.quantity)) FROM Weapon w
-            JOIN w.ship s 
-            WHERE s.name = :name
-            GROUP BY w.weaponsType   
-            """)
+    @Query("SELECT NEW com.coursework.demo.dto.WeaponsTypeDTO(w.weaponsType, SUM(w.quantity)) FROM Weapon w\n" +
+           "JOIN w.ship s\n" +
+           "WHERE s.name = :name\n" +
+           "GROUP BY w.weaponsType\n")
     List<WeaponsTypeDTO> findWeaponsTypeQuantity(@Param("name") String shipName);
 }

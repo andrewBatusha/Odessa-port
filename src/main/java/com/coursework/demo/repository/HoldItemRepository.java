@@ -9,11 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface HoldItemRepository extends PagingAndSortingRepository<HoldItem, Long> {
-    @Query("""
-            SELECT NEW com.coursework.demo.dto.HoldTypeDTO(i.holdType, SUM(i.quantity)) FROM HoldItem i
-            JOIN i.ship s 
-            WHERE s.name = :name
-            GROUP BY i.holdType   
-            """)
+    @Query("SELECT NEW com.coursework.demo.dto.HoldTypeDTO(i.holdType, SUM(i.quantity)) FROM HoldItem i\n" +
+           "JOIN i.ship s\n" +
+           "WHERE s.name = :name\n" +
+           "GROUP BY i.holdType\n")
     List<HoldTypeDTO> findHoldItemQuantity(@Param("name") String shipName);
 }
