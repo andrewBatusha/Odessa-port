@@ -1,5 +1,6 @@
 package com.coursework.demo.service.impl;
 
+import com.coursework.demo.dto.HoldTypeDTO;
 import com.coursework.demo.entity.HoldItem;
 import com.coursework.demo.repository.HoldItemRepository;
 import com.coursework.demo.service.HoldItemService;
@@ -45,5 +46,10 @@ public class HoldItemServiceImpl implements HoldItemService {
     public HoldItem delete(HoldItem object) {
         holdItemRepository.delete(object);
         return object;
+    }
+
+    @Override
+    public List<HoldTypeDTO> findHoldItemQuantity(String shipName) {
+        return holdItemRepository.findHoldItemQuantity(shipName);
     }
 }

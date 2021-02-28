@@ -1,5 +1,6 @@
 package com.coursework.demo.controller;
 
+import com.coursework.demo.dto.AddShipDTO;
 import com.coursework.demo.dto.ShipDTO;
 import com.coursework.demo.entity.Ship;
 import com.coursework.demo.mapper.ShipMapper;
@@ -53,8 +54,8 @@ public class ShipController {
 
     @PostMapping
     @ApiOperation(value = "Create new ship")
-    public ResponseEntity<ShipDTO> save(@RequestBody ShipDTO passportDTO) {
-        Ship ship = shipService.save(shipMapper.convertToEntity(passportDTO));
+    public ResponseEntity<ShipDTO> save(@RequestBody AddShipDTO addShipDTO) {
+        Ship ship = shipService.save(shipMapper.convertToEntity(addShipDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(shipMapper.convertToDto(ship));
     }
 

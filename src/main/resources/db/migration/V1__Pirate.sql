@@ -8,8 +8,6 @@ create table crews
     size integer not null
 );
 
-alter table crews owner to lpwptzohkkcavy;
-
 create table orders
 (
     id serial not null
@@ -24,8 +22,6 @@ create table orders
             references crews
 );
 
-alter table orders owner to lpwptzohkkcavy;
-
 create table ships
 (
     id serial not null
@@ -38,8 +34,6 @@ create table ships
         constraint fkobrhdshhfq0ugoo9vumrmgsiv
             references crews
 );
-
-alter table ships owner to lpwptzohkkcavy;
 
 create table hold_items
 (
@@ -54,8 +48,6 @@ create table hold_items
             references ships
 );
 
-alter table hold_items owner to lpwptzohkkcavy;
-
 create table weapons
 (
     id serial not null
@@ -69,6 +61,3 @@ create table weapons
         constraint fkp837wr183pba3855q399btyvl
             references ships
 );
-
-alter table weapons owner to lpwptzohkkcavy;
-

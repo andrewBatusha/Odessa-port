@@ -1,5 +1,6 @@
 package com.coursework.demo.service.impl;
 
+import com.coursework.demo.dto.WeaponsTypeDTO;
 import com.coursework.demo.entity.Weapon;
 import com.coursework.demo.repository.WeaponRepository;
 import com.coursework.demo.service.WeaponService;
@@ -45,5 +46,10 @@ public class WeaponServiceImpl implements WeaponService {
     public Weapon delete(Weapon object) {
         weaponRepository.delete(object);
         return object;
+    }
+
+    @Override
+    public List<WeaponsTypeDTO> findWeaponsTypeQuantity(String shipName) {
+        return weaponRepository.findWeaponsTypeQuantity(shipName);
     }
 }

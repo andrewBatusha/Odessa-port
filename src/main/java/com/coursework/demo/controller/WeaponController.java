@@ -1,6 +1,8 @@
 package com.coursework.demo.controller;
 
+import com.coursework.demo.dto.AddWeaponDTO;
 import com.coursework.demo.dto.WeaponDTO;
+import com.coursework.demo.dto.WeaponsTypeDTO;
 import com.coursework.demo.entity.Weapon;
 import com.coursework.demo.mapper.WeaponMapper;
 import com.coursework.demo.service.WeaponService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -43,6 +46,13 @@ public class WeaponController {
         return ResponseEntity.status(HttpStatus.OK).body(weaponMapper.convertToDto(weapon));
     }
 
+    @GetMapping("/stats")
+    @ApiOperation(value = "Get weapon type stats")
+    public ResponseEntity<List<WeaponsTypeDTO>> getStats(@RequestParam String shipName) {
+        List<WeaponsTypeDTO> weaponsTypeDTOList = weaponService.findWeaponsTypeQuantity(shipName);
+        return ResponseEntity.status(HttpStatus.OK).body(weaponsTypeDTOList);
+    }
+
 
     @GetMapping
     @ApiOperation(value = "Get the list of all weapons")
@@ -53,8 +63,8 @@ public class WeaponController {
 
     @PostMapping
     @ApiOperation(value = "Create new weapon")
-    public ResponseEntity<WeaponDTO> save(@RequestBody WeaponDTO weaponDTO) {
-        Weapon weapon = weaponService.save(weaponMapper.convertToEntity(weaponDTO));
+    public ResponseEntity<WeaponDTO> save(@RequestBody AddWeaponDTO addWeaponDTO) {
+        Weapon weapon = weaponService.save(weaponMapper.convertToEntity(addWeaponDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(weaponMapper.convertToDto(weapon));
 
     }

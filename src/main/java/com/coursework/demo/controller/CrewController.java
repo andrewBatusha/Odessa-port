@@ -1,5 +1,6 @@
 package com.coursework.demo.controller;
 
+import com.coursework.demo.dto.AddCrewDTO;
 import com.coursework.demo.dto.CrewDTO;
 import com.coursework.demo.entity.Crew;
 import com.coursework.demo.mapper.CrewMapper;
@@ -38,7 +39,7 @@ public class CrewController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get crew info by id")
-    public ResponseEntity<CrewDTO> get(@PathVariable("id") long id){
+    public ResponseEntity<CrewDTO> get(@PathVariable("id") long id) {
         Crew crew = crewService.getById(id);
         return ResponseEntity.status(HttpStatus.OK).body(crewMapper.convertToDto(crew));
     }
@@ -53,15 +54,15 @@ public class CrewController {
 
     @PostMapping
     @ApiOperation(value = "Create new crew")
-    public ResponseEntity<CrewDTO> save(@RequestBody CrewDTO crewDTO) {
-        Crew crew = crewService.save(crewMapper.convertToEntity(crewDTO));
+    public ResponseEntity<CrewDTO> save(@RequestBody AddCrewDTO addCrewDTO) {
+        Crew crew = crewService.save(crewMapper.convertToEntity(addCrewDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(crewMapper.convertToDto(crew));
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Update existing crew by id")
     public ResponseEntity<CrewDTO> update(@PathVariable("id") Long id, @RequestBody CrewDTO crewDTO) {
-        if(id == crewDTO.getId()) {
+        if (id == crewDTO.getId()) {
             Crew crew = crewService.update(crewMapper.convertToEntity(crewDTO));
             return ResponseEntity.status(HttpStatus.OK).body(crewMapper.convertToDto(crew));
         } else {
@@ -71,7 +72,7 @@ public class CrewController {
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete crew by id")
-    public ResponseEntity delete(@PathVariable("id") long id){
+    public ResponseEntity delete(@PathVariable("id") long id) {
         Crew crew = crewService.getById(id);
         crewService.delete(crew);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

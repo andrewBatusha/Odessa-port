@@ -1,5 +1,6 @@
 package com.coursework.demo.controller;
 
+import com.coursework.demo.dto.AddOrderDTO;
 import com.coursework.demo.dto.OrderDTO;
 import com.coursework.demo.entity.Order;
 import com.coursework.demo.mapper.OrderMapper;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -50,11 +52,17 @@ public class OrderController {
         return ResponseEntity.ok().body(orderMapper.convertToDtoList(orderService.getAll(pageable)));
     }
 
+    @GetMapping("/captain")
+    @ApiOperation(value = "Get the list of all crews")
+    public ResponseEntity<List<OrderDTO>> getCaptainOrders(@RequestParam String captain) {
+        return ResponseEntity.ok().body(orderMapper.convertToDtoList(orderService.findAllByCaptain(captain)));
+    }
+
 
     @PostMapping
     @ApiOperation(value = "Create new order")
-    public ResponseEntity<OrderDTO> save(@RequestBody OrderDTO orderDTO) {
-        Order order = orderService.save(orderMapper.convertToEntity(orderDTO));
+    public ResponseEntity<OrderDTO> save(@RequestBody AddOrderDTO addOrderDTO) {
+        Order order = orderService.save(orderMapper.convertToEntity(addOrderDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(orderMapper.convertToDto(order));
     }
 

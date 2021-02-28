@@ -1,6 +1,8 @@
 package com.coursework.demo.controller;
 
+import com.coursework.demo.dto.AddHoldItemDTO;
 import com.coursework.demo.dto.HoldItemDTO;
+import com.coursework.demo.dto.HoldTypeDTO;
 import com.coursework.demo.entity.HoldItem;
 import com.coursework.demo.mapper.HoldItemMapper;
 import com.coursework.demo.service.HoldItemService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -44,6 +47,13 @@ public class HoldItemController {
         return ResponseEntity.status(HttpStatus.OK).body(holdItemMapper.convertToDto(holdItem));
     }
 
+    @GetMapping("/stats")
+    @ApiOperation(value = "Get the list of hold item stats")
+    public ResponseEntity<List<HoldTypeDTO>> getStats(@RequestParam String shipName) {
+        List<HoldTypeDTO> holdTypeDTOList = holdItemService.findHoldItemQuantity(shipName);
+        return ResponseEntity.status(HttpStatus.OK).body(holdTypeDTOList);
+    }
+
 
     @GetMapping
     @ApiOperation(value = "Get the list of all hold items")
@@ -54,8 +64,8 @@ public class HoldItemController {
 
     @PostMapping
     @ApiOperation(value = "Create new hold item")
-    public ResponseEntity<HoldItemDTO> save(@RequestBody HoldItemDTO holdItemDTO) {
-        HoldItem holdItem = holdItemService.save(holdItemMapper.convertToEntity(holdItemDTO));
+    public ResponseEntity<HoldItemDTO> save(@RequestBody AddHoldItemDTO addHoldItemDTO) {
+        HoldItem holdItem = holdItemService.save(holdItemMapper.convertToEntity(addHoldItemDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(holdItemMapper.convertToDto(holdItem));
     }
 
