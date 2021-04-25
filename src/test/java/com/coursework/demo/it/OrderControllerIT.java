@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -49,6 +50,7 @@ public class OrderControllerIT {
     private OrderRepository orderRepository;
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveOrderById() throws Exception {
         when(orderRepository.findById(anyLong())).thenReturn(Optional.of(getOrder()));
 
@@ -58,6 +60,7 @@ public class OrderControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveOrdersByCaptain() throws Exception {
         when(orderRepository.findAllByCaptain("Sparrow")).thenReturn(getExpectedOrderList());
 
@@ -67,6 +70,7 @@ public class OrderControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveOrderList() throws Exception {
         final Order order = getOrder();
         final List<Order> orders = Collections.singletonList(order);
@@ -81,6 +85,7 @@ public class OrderControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testSaveOrder() throws Exception {
         final Order order = getOrder();
         final OrderDTO request = getOrderRequest();
@@ -93,6 +98,7 @@ public class OrderControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateOrder() throws Exception {
         final Order order = getOrder();
         final OrderDTO request = getOrderRequest();
@@ -105,6 +111,7 @@ public class OrderControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateOrderExpectedBadRequest() throws Exception {
         final Order order = getOrder();
         final OrderDTO request = getOrderRequest();
@@ -116,6 +123,7 @@ public class OrderControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testDeleteOrder() throws Exception {
         final Order order = getOrder();
 

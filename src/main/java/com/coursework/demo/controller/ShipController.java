@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ public class ShipController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get ship info by id")
     public ResponseEntity<ShipDTO> get(@PathVariable("id") long id){
         Ship ship = shipService.getById(id);
@@ -46,6 +48,7 @@ public class ShipController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get the list of all ships")
     public ResponseEntity<List<ShipDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable pageable) {
         return ResponseEntity.ok().body(shipMapper.convertToDtoList(shipService.getAll(pageable)));
@@ -53,6 +56,7 @@ public class ShipController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Create new ship")
     public ResponseEntity<ShipDTO> save(@RequestBody AddShipDTO addShipDTO) {
         Ship ship = shipService.save(shipMapper.convertToEntity(addShipDTO));
@@ -60,6 +64,7 @@ public class ShipController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Update existing ship by id")
     public ResponseEntity<ShipDTO> update(@PathVariable("id") long id, @RequestBody ShipDTO shipDTO) {
         if (id == shipDTO.getId()) {
@@ -71,6 +76,7 @@ public class ShipController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Delete ship by id")
     public ResponseEntity delete(@PathVariable("id") long id){
         Ship ship = shipService.getById(id);

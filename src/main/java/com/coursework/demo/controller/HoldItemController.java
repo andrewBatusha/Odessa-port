@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ public class HoldItemController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get hold item info by id")
     public ResponseEntity<HoldItemDTO> get(@PathVariable("id") long id) {
         HoldItem holdItem = holdItemService.getById(id);
@@ -48,6 +50,7 @@ public class HoldItemController {
     }
 
     @GetMapping("/stats")
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get the list of hold item stats")
     public ResponseEntity<List<HoldTypeDTO>> getStats(@RequestParam String shipName) {
         List<HoldTypeDTO> holdTypeDTOList = holdItemService.findHoldItemQuantity(shipName);
@@ -56,6 +59,7 @@ public class HoldItemController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get the list of all hold items")
     public ResponseEntity<List<HoldItemDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable pageable) {
         return ResponseEntity.ok().body(holdItemMapper.convertToDtoList(holdItemService.getAll(pageable)));
@@ -63,6 +67,7 @@ public class HoldItemController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Create new hold item")
     public ResponseEntity<HoldItemDTO> save(@RequestBody AddHoldItemDTO addHoldItemDTO) {
         HoldItem holdItem = holdItemService.save(holdItemMapper.convertToEntity(addHoldItemDTO));
@@ -70,6 +75,7 @@ public class HoldItemController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Update existing hold item by id")
     public ResponseEntity<HoldItemDTO> update(@PathVariable("id") long id, @RequestBody HoldItemDTO holdItemDTO) {
         if (id == holdItemDTO.getId()) {
@@ -81,6 +87,7 @@ public class HoldItemController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Delete hold item by id")
     public ResponseEntity delete(@PathVariable("id") long id) {
         HoldItem holdItem = holdItemService.getById(id);

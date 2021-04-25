@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -49,6 +50,7 @@ public class HoldItemControllerIT {
     private HoldItemRepository holdItemRepository;
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveHoldItemById() throws Exception {
         when(holdItemRepository.findById(anyLong())).thenReturn(Optional.of(getHoldItem()));
 
@@ -58,6 +60,7 @@ public class HoldItemControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveStats() throws Exception {
         when(holdItemRepository.findHoldItemQuantity("Victory")).thenReturn(getExpectedHoldTypeDTOList());
 
@@ -67,6 +70,7 @@ public class HoldItemControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveHoldItemList() throws Exception {
         final HoldItem holdItem = getHoldItem();
         final List<HoldItem> holdItems = Collections.singletonList(holdItem);
@@ -81,6 +85,7 @@ public class HoldItemControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testSaveHoldItem() throws Exception {
         final HoldItem holdItem = getHoldItem();
         final HoldItemDTO request = getHoldItemRequest();
@@ -93,6 +98,7 @@ public class HoldItemControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateHoldItem() throws Exception {
         final HoldItem holdItem = getHoldItem();
         final HoldItemDTO request = getHoldItemRequest();
@@ -105,6 +111,7 @@ public class HoldItemControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateHoldItemExpectedBadRequest() throws Exception {
         final HoldItem holdItem = getHoldItem();
         final HoldItemDTO request = getHoldItemRequest();
@@ -116,6 +123,7 @@ public class HoldItemControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testDeleteHoldItem() throws Exception {
         final HoldItem holdItem = getHoldItem();
 

@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -48,6 +49,7 @@ public class CrewControllerIT {
     private CrewRepository crewRepository;
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveCrewById() throws Exception {
         when(crewRepository.findById(anyLong())).thenReturn(Optional.of(getCrew()));
 
@@ -57,6 +59,7 @@ public class CrewControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveCrewList() throws Exception {
         final Crew crew = getCrew();
         final List<Crew> crews = Collections.singletonList(crew);
@@ -71,6 +74,7 @@ public class CrewControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testSaveCrew() throws Exception {
         final Crew crew = getCrew();
         final CrewDTO request = getCrewRequest();
@@ -83,6 +87,7 @@ public class CrewControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateCrew() throws Exception {
         final Crew crew = getCrew();
         final CrewDTO request = getCrewRequest();
@@ -95,6 +100,7 @@ public class CrewControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateCrewExpectedBadRequest() throws Exception {
         final Crew crew = getCrew();
         final CrewDTO request = getCrewRequest();
@@ -106,6 +112,7 @@ public class CrewControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testDeleteCrew() throws Exception {
         final Crew crew = getCrew();
 

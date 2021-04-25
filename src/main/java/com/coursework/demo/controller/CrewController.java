@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ public class CrewController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get crew info by id")
     public ResponseEntity<CrewDTO> get(@PathVariable("id") long id) {
         Crew crew = crewService.getById(id);
@@ -46,6 +48,7 @@ public class CrewController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get the list of all crews")
     public ResponseEntity<List<CrewDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable pageable) {
         return ResponseEntity.ok().body(crewMapper.convertToDtoList(crewService.getAll(pageable)));
@@ -53,6 +56,7 @@ public class CrewController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Create new crew")
     public ResponseEntity<CrewDTO> save(@RequestBody AddCrewDTO addCrewDTO) {
         Crew crew = crewService.save(crewMapper.convertToEntity(addCrewDTO));
@@ -60,6 +64,7 @@ public class CrewController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Update existing crew by id")
     public ResponseEntity<CrewDTO> update(@PathVariable("id") Long id, @RequestBody CrewDTO crewDTO) {
         if (id == crewDTO.getId()) {
@@ -71,6 +76,7 @@ public class CrewController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Delete crew by id")
     public ResponseEntity delete(@PathVariable("id") long id) {
         Crew crew = crewService.getById(id);

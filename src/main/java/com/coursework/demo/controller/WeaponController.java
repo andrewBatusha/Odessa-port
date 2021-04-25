@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ public class WeaponController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get weapon info by id")
     public ResponseEntity<WeaponDTO> get(@PathVariable("id") long id) {
         Weapon weapon = weaponService.getById(id);
@@ -47,6 +49,7 @@ public class WeaponController {
     }
 
     @GetMapping("/stats")
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get weapon type stats")
     public ResponseEntity<List<WeaponsTypeDTO>> getStats(@RequestParam String shipName) {
         List<WeaponsTypeDTO> weaponsTypeDTOList = weaponService.findWeaponsTypeQuantity(shipName);
@@ -55,6 +58,7 @@ public class WeaponController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN, USER')")
     @ApiOperation(value = "Get the list of all weapons")
     public ResponseEntity<List<WeaponDTO>> getAll(@PageableDefault(sort = {"id"}) Pageable pageable) {
         return ResponseEntity.ok().body(weaponMapper.convertToDtoList(weaponService.getAll(pageable)));
@@ -62,6 +66,7 @@ public class WeaponController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Create new weapon")
     public ResponseEntity<WeaponDTO> save(@RequestBody AddWeaponDTO addWeaponDTO) {
         Weapon weapon = weaponService.save(weaponMapper.convertToEntity(addWeaponDTO));
@@ -70,6 +75,7 @@ public class WeaponController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Update existing weapon by id")
     public ResponseEntity<WeaponDTO> update(@PathVariable("id") long id, @RequestBody WeaponDTO weaponDTO) {
         if (id == weaponDTO.getId()) {
@@ -81,6 +87,7 @@ public class WeaponController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Delete weapon by id")
     public ResponseEntity delete(@PathVariable("id") long id) {
         Weapon weapon = weaponService.getById(id);

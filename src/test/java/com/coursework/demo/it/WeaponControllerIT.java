@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -49,6 +50,7 @@ public class WeaponControllerIT {
     private WeaponRepository weaponRepository;
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveWeaponById() throws Exception {
         when(weaponRepository.findById(anyLong())).thenReturn(Optional.of(getWeapon()));
 
@@ -58,6 +60,7 @@ public class WeaponControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveStats() throws Exception {
         when(weaponRepository.findWeaponsTypeQuantity("Victory")).thenReturn(getExpectedWeaponsTypeDTOList());
 
@@ -67,6 +70,7 @@ public class WeaponControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveWeaponList() throws Exception {
         final Weapon weapon = getWeapon();
         final List<Weapon> weapons = Collections.singletonList(weapon);
@@ -81,6 +85,7 @@ public class WeaponControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testSaveWeapon() throws Exception {
         final Weapon weapon = getWeapon();
         final WeaponDTO request = getWeaponRequest();
@@ -93,6 +98,7 @@ public class WeaponControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateWeapon() throws Exception {
         final Weapon weapon = getWeapon();
         final WeaponDTO request = getWeaponRequest();
@@ -105,6 +111,7 @@ public class WeaponControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateWeaponExpectedBadRequest() throws Exception {
         final Weapon weapon = getWeapon();
         final WeaponDTO request = getWeaponRequest();
@@ -116,6 +123,7 @@ public class WeaponControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testDeleteWeapon() throws Exception {
         final Weapon weapon = getWeapon();
 

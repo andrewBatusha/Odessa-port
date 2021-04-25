@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -48,6 +49,7 @@ public class ShipControllerIT {
     private ShipRepository shipRepository;
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveShipById() throws Exception {
         when(shipRepository.findById(anyLong())).thenReturn(Optional.of(getShip()));
 
@@ -57,6 +59,7 @@ public class ShipControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testRetrieveShipList() throws Exception {
         final Ship ship = getShip();
         final List<Ship> ships = Collections.singletonList(ship);
@@ -71,6 +74,7 @@ public class ShipControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testSaveShip() throws Exception {
         final Ship ship = getShip();
         final ShipDTO request = getShipRequest();
@@ -83,6 +87,7 @@ public class ShipControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateShip() throws Exception {
         final Ship ship = getShip();
         final ShipDTO request = getShipRequest();
@@ -95,6 +100,7 @@ public class ShipControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testUpdateShipExpectedBadRequest() throws Exception {
         final Ship ship = getShip();
         final ShipDTO request = getShipRequest();
@@ -106,6 +112,7 @@ public class ShipControllerIT {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void testDeleteShip() throws Exception {
         final Ship ship = getShip();
 
